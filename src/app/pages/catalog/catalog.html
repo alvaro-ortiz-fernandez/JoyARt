@@ -1,0 +1,44 @@
+<section class="row gx-5 justify-content-center">
+    <article class="col-lg-11 col-xl-9 col-xxl-8">
+        <!-- Título -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Catálogo de productos</span></h1>
+            <p class="lead fw-light mt-3">Explora las piezas de joyería artesanal disponibles. Haz clic en cada una para visualizar e interacturar con su modelo 3D</p>
+        </div>
+
+        <!-- Listado de paletas -->
+        <div>
+            @if (!(products | async)) {
+                <app-spinner [size]="SpinnerSize.LG"></app-spinner>
+            } @else {
+                @for (product of (products | async); track product.id) {
+                <div class="card shadow border-0 rounded-4 mb-5">
+                    <div class="card-body p-5">
+                        <!-- De -->
+                        <div class="row mb-3 align-items-center gx-5">
+                            <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
+                                <div class="bg-light p-4 rounded-4">
+                                    <div class="fw-bolder" style="color: 7300FF">#7300FF</div>
+                                    <div class="small fst-italic text-muted">Color base</div>
+                                    <div class="small fw-bolder mt-2">monochrome</div>
+                                    <div class="small fst-italic text-muted">Esquema cromático</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="fw-bolder">Nostalgia urbana</div>
+                                <div class="small text-muted fst-italic">
+                                    <i class="bi bi-stars me-1"></i>
+                                    <span>Estación espacial deshabitada de tecnología antigua.</span>
+                                </div>
+                                <div class="mt-2">Para fortalecer la identidad gráfica.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            }
+
+            <app-error-alert [error]="loadError" [alertClass]="'mb-0 mt-4'"></app-error-alert>
+        </div>
+    </article>
+</section>
