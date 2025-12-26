@@ -1,7 +1,7 @@
 <!-- Inicio -->
 <section class="row pb-5 gx-5 align-items-center">
     <!-- Título -->
-    <article class="col-xxl-5">
+    <article class="col-xxl-6">
         <div class="text-center text-xxl-start">
             <div class="badge bg-gradient-primary-to-secondary text-white mb-4"><div class="text-uppercase">Joyas &middot; Artesanía &middot; Realidad Mixta</div></div>
             <div class="fs-3 fw-light text-muted">Descubre, explora y visualiza piezas de joyería en 3D en el entorno real</div>
@@ -20,8 +20,8 @@
     </article>
 
     <!-- Imagen -->
-    <article class="col-xxl-7">
-        <div class="d-flex justify-content-center mt-5 mt-xxl-0">
+    <article class="col-xxl-6">
+        <div class="d-flex justify-content-end mt-5 mt-xxl-0">
             <div class="profile bg-gradient-primary-to-secondary">
                 <img class="profile-img" src="assets/images/logo-home.png" alt="JoyARt" />
                 <div class="dots-1">
@@ -133,12 +133,52 @@
     </article>
 </section>
 
+<div class="b-divider"></div>
+
+<section class="row pt-5 mt-5 gx-5 justify-content-center">
+    <article class="col-sm-12 pt-5 text-center">
+        <div class="row gx-5">
+            <!-- Finalidad y público -->
+            <div class="col-md-6 pe-5">
+                <div class="py-5 px-5 h-100 bg-white border-top-20 shadow-sm">
+                    <h1 class="text-gradient mb-3">Finalidad de la aplicación</h1>
+                    <p class="lead fw-light">
+                        JoyARt es un catálogo web de joyería artesanal que integra contenidos planos con visualización tridimensional
+                        para mejorar la comprensión formal y espacial de las piezas.
+                    </p>
+                    <p class="text-muted mb-0">
+                        La aplicación está dirigida a personas interesadas en artesanía y joyería que realizan compras online
+                        y desean observar los productos con mayor detalle antes de tomar una decisión.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Experiencia de realidad mixta -->
+            <div class="col-md-6 ps-5">
+                <div class="py-5 px-5 h-100 bg-white border-top-20 shadow-sm">
+                    <h1 class="text-gradient mb-3">Experiencia de realidad mixta</h1>
+                    <p class="lead fw-light">
+                        La aplicación incorpora una escena de realidad mixta accesible desde el navegador,
+                        donde un objeto 3D se visualiza de forma integrada con el entorno físico del usuario.
+                    </p>
+                    <p class="text-muted mb-0">
+                        Esta escena híbrida habilita la interacción con el modelo mediante rotación, zoom y posicionamiento,
+                        manteniendo una relación espacial que enlaza el contenido digital y el espacio real.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+
+<div class="b-divider"></div>
+
 <!-- Tecnologías -->
-<section class="row mt-2 g-xxl-5 g-4">
-    <div class="col-sm-12">
+<section class="row pt-5 py-5 mt-2 g-xxl-5 g-4">
+    <div class="col-sm-12 pt-5">
         <div class="landing-title text-center mb-0">
-            <h2 class="text-gradient d-inline">Tecnologías principales</h2>
-            <p class="lead fw-light mt-3">JoyARt está construido sobre los siguientes frameworks y herramientas.</p>
+            <h1 class="text-gradient mb-3">Tecnologías principales</h1>
+            <p class="lead fw-light">JoyARt está construido sobre los siguientes frameworks y herramientas.</p>
         </div>
     </div>
 
@@ -147,4 +187,21 @@
             <app-tech-card [tech]="tech"></app-tech-card>
         }
     </div>
+</section>
+
+<div class="b-divider"></div>
+
+<!-- Alcance del proyecto -->
+<section class="row pt-5 mt-5 gx-5 justify-content-center">
+    <article class="col-lg-8 py-5 text-center">
+        <h1 class="text-gradient mb-3">Sobre el proyecto</h1>
+        <p class="text-muted">
+            JoyARt se desarrolla como un prototipo funcional que demuestra la viabilidad del uso de realidad mixta
+            aplicada a la divulgación y promoción de joyería artesanal mediante tecnologías web actuales.
+        </p>
+        <p class="text-muted mb-0">
+            El proyecto pretende mostrar un flujo entre contenidos planos,
+            visualización 3D e interacción en realidad aumentada.
+        </p>
+    </article>
 </section>
