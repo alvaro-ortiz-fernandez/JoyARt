@@ -1,3 +1,7 @@
+.fs-7 {
+  font-size: 0.9rem !important;
+}
+
 .b-divider {
   position: absolute;
   height: 3rem;
@@ -11,4 +15,39 @@
 
 .border-top-20 {
   border-radius: 20px 20px 0 0;
+}
+
+.form-check .form-check-input,
+.form-check .form-check-label {
+  cursor: pointer;
+}
+
+.section-title {
+  position: relative;
+  border-bottom: 1px solid #bdbdbd;
+  padding-bottom: 15px;
+  margin-bottom: 15px !important;
+}
+.section-title::after {
+  content: "";
+  width: 50px;
+  height: 2px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #6865FE;
+}
+
+.page-link.active,
+.page-item.active .page-link {
+  background: #6865FE !important;
+}
+
+.page-link:hover {
+  background: #6865FE !important;
+  color: #ffffff !important;
+}
+
+.page-item:not(.active) .page-link {
+  cursor: pointer;
 }
