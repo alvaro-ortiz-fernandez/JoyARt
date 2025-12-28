@@ -1,0 +1,14 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        @for (path of paths; track path.text) {
+            <li class="breadcrumb-item" [class.active]="!path.link"
+                [attr.aria-current]="!path.link ? 'page' : null">
+                @if (path.link) {
+                    <a class="nav-link d-inline" [routerLink]="path.link">{{ path.text }}</a>
+                } @else {
+                    {{ path.text }}
+                }
+            </li>
+        }
+    </ol>
+</nav>
