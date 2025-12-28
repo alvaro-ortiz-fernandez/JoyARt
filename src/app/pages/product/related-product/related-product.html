@@ -1,0 +1,44 @@
+<div [class]="class">
+    <div class="card h-100">
+        <!-- Imagen -->
+        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="...">
+
+        <!-- Product details-->
+        <div class="card-body p-4">
+            <div class="text-center">
+                <!-- Nombre -->
+                <h5 class="fw-bolder">{{ product.name }}</h5>
+
+                <!-- Puntuación -->
+                <div class="d-flex justify-content-center small text-warning mb-2">
+                    @for (star of product.getStarts(); track $index) {
+                        <div class="bi"
+                            [class.bi-star-fill]="$index < product.getFilledStarts()"
+                            [class.bi-star]="$index >= product.getFilledStarts()">
+                        </div>
+                    }
+                </div>
+
+                <!-- Precio -->
+                <span class="fs-5 text-primary">
+                    {{ product.getCurrentPrice() }}€
+                </span>
+                @if (product.getPreviousPrice()) {
+                <span class="fs-6 text-muted text-decoration-line-through ms-1">
+                    {{ product.getPreviousPrice() }}€
+                </span>
+                }
+            </div>
+        </div>
+
+        <!-- Ver detalle -->
+        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+                <a class="btn btn-primary mt-auto" [routerLink]="'/product/' + product.id">
+                    <i class="bi bi-eye me-2"></i>
+                    <span>Ver detalle</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

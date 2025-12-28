@@ -1,1 +1,79 @@
-<p>product works!</p>
+<app-breadcrumb [paths]="breadcrumb"></app-breadcrumb>
+
+<!-- Detalle del producto -->
+<section>
+    <div class="container px-0 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center" style="min-height: 500px;">
+            @if (!(product | async)) {
+                <app-spinner [size]="SpinnerSize.LG"></app-spinner>
+            } @else {
+                <!-- Imagen 3D -->
+                <div class="col-md-6">
+                    <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="...">
+                </div>
+                <div class="col-md-6">
+                    <!-- Categoría -->
+                    <div class="small mb-1">{{ (product | async)?.category }}</div>
+
+                    <!-- Nombre -->
+                    <h1 class="display-5 fw-bolder">{{ (product | async)?.name }}</h1>
+                    
+                    <!-- Precio -->
+                    <div>
+                        <span class="fs-5 text-primary">
+                            {{ (product | async)?.getCurrentPrice() }}€
+                        </span>
+                        @if ((product | async)?.getPreviousPrice()) {
+                        <span class="fs-6 text-muted text-decoration-line-through ms-2">
+                            {{ (product | async)?.getPreviousPrice() }}€
+                        </span>
+                        }
+                    </div>
+
+                    <!-- Puntuación -->
+                    <div class="d-flex text-warning mt-2">
+                        @for (star of (product | async)?.getStarts(); track $index) {
+                            <div class="bi"
+                                [class.bi-star-fill]="$index < ((product | async)?.getFilledStarts() ?? 0)"
+                                [class.bi-star]="$index >= ((product | async)?.getFilledStarts() ?? 0)">
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Descripción -->
+                    <p class="lead mt-5">{{ (product | async)?.description }}</p>
+
+                    <!-- Comprar -->
+                    <div class="d-flex">
+                        <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem">
+                        <button class="btn btn-primary flex-shrink-0" type="button">
+                            <i class="bi-cart-fill me-1"></i>
+                            Añadir al carrito
+                        </button>
+                    </div>
+                </div>
+            }
+
+            <app-error-alert [error]="loadError" [alertClass]="'mb-0 mt-4'"></app-error-alert>
+        </div>
+    </div>
+</section>
+
+<!-- Productos relacionados -->
+<section class="pt-5 bg-light" style="min-height: 300px;">
+    <div class="container px-0">
+        <h2 class="fw-bolder mb-4">Productos relacionados</h2>
+        
+        @if (!(relatedProducts | async)) {
+            <app-spinner [size]="SpinnerSize.LG"></app-spinner>
+        } @else {
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                @for (relatedProduct of (relatedProducts | async); track relatedProduct.id) {
+                    <app-related-product [product]="relatedProduct" [class]="'col mb-5'"></app-related-product>
+                }
+            </div>
+        }
+
+        <app-error-alert [error]="loadRelatedProductsError" [alertClass]="'mb-0 mt-4'"></app-error-alert>
+    </div>
+</section>
