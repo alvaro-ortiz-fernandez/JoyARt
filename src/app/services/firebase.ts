@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
   getFirestore, collection, addDoc, getDocs, getDoc,
-  CollectionReference, DocumentData, DocumentReference, DocumentSnapshot
+  CollectionReference, DocumentData, DocumentReference, DocumentSnapshot,
+  doc
 } from 'firebase/firestore';
 import { forkJoin, from, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { Product } from '../model/product';
+import { Color, Price, Product } from '../model/product';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,10 @@ export class FirebaseService {
 
   getProducts(): Observable<Product[]> {
     return this.productRepository.findAll();
+  }
+
+  getProduct(id: string): Observable<Product> {
+    return this.productRepository.find(id);
   }
 
   saveProduct(product: Product): Observable<Product> {
@@ -38,6 +43,11 @@ abstract class FirebaseRepository<T extends { id?: string }> {
 
   protected get collectionRef(): CollectionReference<DocumentData> {
     return collection(this.db, this.collectionName);
+  }
+
+  find(id: string): Observable<T> {
+    const docRef = doc(this.db, this.collectionName, id);
+    return this.build(docRef);
   }
 
   findAll(): Observable<T[]> {
@@ -75,15 +85,53 @@ class ProductRepository extends FirebaseRepository<Product> {
 
         const id: string = docSnap.id;
         const name: string = data['name'];
+        const description: string = data['description'];
+        const category: string = data['category'];
+        const color: Color = data['color'];
+        const prices: Price[] = this.toPrices(data['prices']);
+        const rating: number = data['rating'];
         
-        return new Product(id, name);
+        return new Product(id, name, description, category, color, prices, rating);
       })
     );
   }
 
   protected debuild(entity: Product): DocumentData {
     return {
-      name: entity.name
+      name: entity.name,
+      description: entity.description,
+      category: entity.category,
+      color: entity.color,
+      prices: this.fromPrices(entity.prices),
+      rating: entity.rating
+    };
+  }
+
+  private toPrices(docData?: DocumentData[]): Price[] {
+    if (!docData)
+      return [];
+
+    return docData?.map(doc => this.toPrice(doc));
+  }
+
+  private toPrice(docData?: DocumentData): Price {
+    return new Price(
+        docData?.['amount'],
+        new Date(
+          (docData?.['date'].seconds * 1000)
+          + (docData?.['date'].nanoseconds / 1000000)
+        )
+      );
+  }
+
+  private fromPrices(prices: Price[]): DocumentData[] {
+    return prices.map(price => this.fromPrice(price));
+  }
+
+  private fromPrice(price: Price): DocumentData {
+    return {
+      amount: price.amount,
+      date: price.date
     };
   }
 }
