@@ -1,0 +1,49 @@
+<div class="list-group-item px-0 py-4 bg-light border-0">
+    <div class="row g-3">
+        <div class="col-lg-4 col-6">
+            <!-- Imagen 3D -->
+            <div class="border rounded-3 p-2">
+                <img src="https://dummyimage.com/240x240/dee1e6/6e6e6e"
+                    class="img-fluid" alt="Producto" style="width: 100%;">
+            </div>
+        </div>
+        <div class="col-lg-8 col-6">
+            <!-- Categoría -->
+            <div class="small text-muted mb-1">{{ product.category }}</div>
+
+            <!-- Nombre -->
+            <h4 class="mb-1">{{ product.name }}</h4>
+
+            <!-- Precio -->
+            <span class="text-primary">
+                {{ product.getCurrentPrice() }}€
+            </span>
+            @if (product.getPreviousPrice()) {
+            <span class="fs-7 text-muted text-decoration-line-through ms-2">
+                {{ product.getPreviousPrice() }}€
+            </span>
+            }
+            
+            <!-- Puntuación -->
+            <div class="d-flex small text-warning mt-1">
+                @for (star of product.getStarts(); track $index) {
+                    <div class="bi"
+                        [class.bi-star-fill]="$index < product.getFilledStarts()"
+                        [class.bi-star]="$index >= product.getFilledStarts()">
+                    </div>
+                }
+            </div>
+
+            <!-- Descripción -->
+            <p class="mt-4 mb-0 text-muted">{{ product.description }}</p>
+
+            <div class="d-flex align-items-center mt-4">
+                <!-- Ver detalle -->
+                <a class="btn btn-primary" [routerLink]="'/product/' + product.id">
+                    <i class="bi bi-eye me-2"></i>
+                    <span>Ver detalle</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

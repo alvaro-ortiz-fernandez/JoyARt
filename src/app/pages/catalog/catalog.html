@@ -1,44 +1,196 @@
-<section class="row gx-5 justify-content-center">
-    <article class="col-lg-11 col-xl-9 col-xxl-8">
-        <!-- Título -->
-        <div class="text-center mb-5">
-            <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Catálogo de productos</span></h1>
-            <p class="lead fw-light mt-3">Explora las piezas de joyería artesanal disponibles. Haz clic en cada una para visualizar e interacturar con su modelo 3D</p>
-        </div>
+<app-breadcrumb [paths]="breadcrumb"></app-breadcrumb>
 
-        <!-- Listado de paletas -->
-        <div>
-            @if (!(products | async)) {
-                <app-spinner [size]="SpinnerSize.LG"></app-spinner>
-            } @else {
-                @for (product of (products | async); track product.id) {
-                <div class="card shadow border-0 rounded-4 mb-5">
-                    <div class="card-body p-5">
-                        <!-- De -->
-                        <div class="row mb-3 align-items-center gx-5">
-                            <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
-                                <div class="bg-light p-4 rounded-4">
-                                    <div class="fw-bolder" style="color: 7300FF">#7300FF</div>
-                                    <div class="small fst-italic text-muted">Color base</div>
-                                    <div class="small fw-bolder mt-2">monochrome</div>
-                                    <div class="small fst-italic text-muted">Esquema cromático</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-8">
-                                <div class="fw-bolder">Nostalgia urbana</div>
-                                <div class="small text-muted fst-italic">
-                                    <i class="bi bi-stars me-1"></i>
-                                    <span>Estación espacial deshabitada de tecnología antigua.</span>
-                                </div>
-                                <div class="mt-2">Para fortalecer la identidad gráfica.</div>
-                            </div>
+<section class="container my-4">
+    <div class="row px-0 my-5">
+        @if (!(products | async)) {
+        <app-spinner [size]="SpinnerSize.LG"></app-spinner>
+        } @else {
+        <!-- Filtros -->
+        <aside class="col-12 col-md-3 ps-0">
+            <div class="mb-4">
+                <!-- Precio -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title section-title">Precio</h5>
+                        
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="price1"
+                                (change)="togglePrice('0-9')"
+                                [checked]="selectedPrices.has('0-9')">
+                            <label class="form-check-label" for="price1">
+                                0€ - 9€ <span class="text-muted fs-7 ms-1">({{ numProductsByPrice['0-9'] }})</span>
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="price2"
+                                (change)="togglePrice('10-19')"
+                                [checked]="selectedPrices.has('10-19')">
+                            <label class="form-check-label" for="price2">
+                                10€ - 19€ <span class="text-muted fs-7 ms-1">({{ numProductsByPrice['10-19'] }})</span>
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="price3"
+                                (change)="togglePrice('20-49')"
+                                [checked]="selectedPrices.has('20-49')">
+                            <label class="form-check-label" for="price3">
+                                20€ - 49€ <span class="text-muted fs-7 ms-1">({{ numProductsByPrice['20-49'] }})</span>
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="price4"
+                                (change)="togglePrice('50-99')"
+                                [checked]="selectedPrices.has('50-99')">
+                            <label class="form-check-label" for="price4">
+                                50€ - 99€ <span class="text-muted fs-7 ms-1">({{ numProductsByPrice['50-99'] }})</span>
+                            </label>
+                        </div>
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="checkbox" id="price5"
+                                (change)="togglePrice('100-10000000')"
+                                [checked]="selectedPrices.has('100-10000000')">
+                            <label class="form-check-label" for="price5">
+                                100€ + <span class="text-muted fs-7 ms-1">({{ numProductsByPrice['100+'] }})</span>
+                            </label>
                         </div>
                     </div>
                 </div>
-                }
-            }
+                
+                <!-- Categoría -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title section-title">Categoría</h5>
 
-            <app-error-alert [error]="loadError" [alertClass]="'mb-0 mt-4'"></app-error-alert>
+                        @for (category of categories; track category.value) {
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" [id]="'category-' + category.value"
+                                (change)="toggleCategory(category.value)"
+                                [checked]="selectedCategories.has(category.value)">
+                            <label class="form-check-label" [for]="'category-' + category.value">
+                                {{ category.value }} <span class="text-muted fs-7 ms-1">({{ category.count }})</span>
+                            </label>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title section-title">Color</h5>
+                        
+                        @for (color of colors; track color.value) {
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" [id]="'color-' + color.value"
+                                    (change)="toggleColor(color.value)"
+                                    [checked]="selectedColors.has(color.value)">
+                                <label class="form-check-label" [for]="'color-' + color.value">
+                                    {{ color.value }} <span class="text-muted fs-7 ms-1">({{ color.count }})</span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Puntuación -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title section-title">Puntuación</h5>
+                        
+                        @for (ranking of [5, 4, 3, 2, 1]; track ranking) {
+                        <div class="vstack">
+                            <label class="d-flex align-items-center gap-2"
+                                    [class.mb-1]="ranking != 1"
+                                    [class.mb-0]="ranking == 1">
+                                <input class="form-check-input mt-0" type="radio" name="rating"
+                                    (change)="selectRating(ranking.toString())"
+                                    [checked]="selectedRating == ranking.toString()">
+                                <div class="flex-grow-1">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar" [style.width]="((numProductsByRating[ranking] / totalProducts) * 100) + '%'"></div>
+                                    </div>
+                                </div>
+                                <div class="text-warning">
+                                    @for (star of [1, 2, 3, 4, 5]; track star) {
+                                    <i class="bi"
+                                        [class.bi-star-fill]="star <= ranking+1"
+                                        [class.bi-star]="star >= ranking+1">
+                                    </i>
+                                    }
+                                </div>
+                                <div style="min-width: 30px;" class="text-end">
+                                    <span class="text-muted fs-7">({{ numProductsByRating[ranking] }})</span>
+                                </div>
+                            </label>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Listado de productos -->
+        <div class="col-12 col-md-9 ps-4 pe-0">
+            <div class="row align-items-center mb-3">
+                <!-- Nº de resultados -->
+                <div class="col-6">
+                    <span class="text-muted">Mostrando</span>
+                    @if (numProducts > 0) {
+                    <span class="text-primary"> {{ startIndex }} - {{ endIndex }}</span>
+                    <span class="text-muted"> de</span>
+                    }
+                    <span class="text-primary"> {{ numProducts }}</span>
+                    <span class="text-muted"> resultados</span>
+                </div>
+
+                <!-- Ordenación -->
+                <div class="col-6 text-end">
+                    <label class="form-check-label text-muted me-2" for="order">Ordenar por:</label>
+                    <select class="form-select d-inline-block w-auto" id="order"
+                            (change)="changeOrder($any($event.target).value)">
+                        <option value="rating" selected>Mejor puntuación</option>
+                        <option value="min-price">Precio: Menor a mayor</option>
+                        <option value="max-price">Precio: Mayor a menor</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Productos -->
+            <div class="list-group">
+                @for (product of (pagedProducts | async); track product.id) {
+                    <app-list-product [product]="product"></app-list-product>
+                }
+            </div>
+            
+            <!-- Paginación -->
+            @if (numProducts > 0) {
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center mb-0">
+                    <li class="page-item me-2" [class.disabled]="currentPage$.value === 1">
+                        <a class="page-link bg-light border-0 rounded-1" (click)="prevPage()" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    @for (page of getPages(); track $index) {
+                    <li class="page-item me-2" [class.active]="currentPage$.value === page">
+                        <a class="page-link bg-light border-0 rounded-1" (click)="goToPage(page)">{{ page }}</a>
+                    </li>
+                    }
+
+                    <li class="page-item" [class.disabled]="currentPage$.value === totalPages">
+                        <a class="page-link bg-light border-0 rounded-1" (click)="nextPage()" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            }
         </div>
-    </article>
+        }
+
+        <app-error-alert [error]="loadError" [alertClass]="'mb-0 mt-4'"></app-error-alert>
+    </div>
 </section>
