@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";;
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
 import { decodeFireConfig } from './app/services/firebase';
+import '@google/model-viewer';
 
 /* =======================================================
  * ANGULAR

@@ -9,10 +9,11 @@ import { finalize, map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ErrorAlert } from '../../components/error-alert/error-alert';
 import { ActivatedRoute } from '@angular/router';
+import { ModelViewer } from '../../components/model-viewer/model-viewer';
 
 @Component({
   selector: 'app-product',
-  imports: [ Breadcrumb, RelatedProduct, AsyncPipe, ErrorAlert, Spinner ],
+  imports: [ Breadcrumb, RelatedProduct, AsyncPipe, ErrorAlert, Spinner, ModelViewer ],
   templateUrl: './product.html',
   styleUrl: './product.scss',
 })
